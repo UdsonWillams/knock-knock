@@ -1,0 +1,17 @@
+-r requirements.txt
+
+# Linters and Formaters
+black==24.4.2
+flake8==7.0.0
+isort==5.13.2
+pre-commit==3.7.1
+pre-commit-hooks==4.6.0
+vulture==2.11
+safety==3.2.0
+bandit==1.7.8
+
+# debbuger
+ipdb==0.13.13
+
+#tests
+coverage==7.5.1

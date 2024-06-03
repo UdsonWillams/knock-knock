@@ -1,23 +1,25 @@
-from typing import List
-import os
-import datetime
-import traceback
-import functools
-import json
-import socket
-import requests
-import time
-import hmac
-import hashlib
 import base64
+import datetime
+import functools
+import hashlib
+import hmac
+import os
+import socket
+import traceback
 import urllib
+from typing import List
+
+import requests
 
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
-def dingtalk_sender(webhook_url: str,
-                    user_mentions: List[str] = [],
-                    secret: str = '',
-                    keywords: List[str] = []):
+
+def dingtalk_sender(
+    webhook_url: str,
+    user_mentions: List[str] = [],
+    secret: str = "",
+    keywords: List[str] = [],
+):
     """
     DingTalk sender wrapper: execute func, send a DingTalk notification with the end status
     (sucessfully finished or crashed) at the end. Also send a DingTalk notification before
@@ -41,28 +43,26 @@ def dingtalk_sender(webhook_url: str,
 
     """
     msg_template = {
-        "msgtype": "text", 
-        "text": {
-            "content": ""
-        }, 
-        "at": {
-            "atMobiles": user_mentions,
-            "isAtAll": False
-        }
+        "msgtype": "text",
+        "text": {"content": ""},
+        "at": {"atMobiles": user_mentions, "isAtAll": False},
     }
 
     def _construct_encrypted_url():
-        '''
+        """
         Visit https://ding-doc.dingtalk.com/doc#/serverapi2/qf2nxq for details
-        '''
+        """
         timestamp = round(datetime.datetime.now().timestamp() * 1000)
-        secret_enc = secret.encode('utf-8')
-        string_to_sign = '{}\n{}'.format(timestamp, secret)
-        string_to_sign_enc = string_to_sign.encode('utf-8')
-        hmac_code = hmac.new(secret_enc, string_to_sign_enc, digestmod=hashlib.sha256).digest()
+        secret_enc = secret.encode("utf-8")
+        string_to_sign = "{}\n{}".format(timestamp, secret)
+        string_to_sign_enc = string_to_sign.encode("utf-8")
+        hmac_code = hmac.new(
+            secret_enc, string_to_sign_enc, digestmod=hashlib.sha256
+        ).digest()
         sign = urllib.parse.quote_plus(base64.b64encode(hmac_code))
-        encrypted_url = webhook_url + '&timestamp={}'.format(timestamp) \
-                        + '&sign={}'.format(sign) 
+        encrypted_url = (
+            webhook_url + "&timestamp={}".format(timestamp) + "&sign={}".format(sign)
+        )
         return encrypted_url
 
     def decorator_sender(func):
@@ -78,21 +78,23 @@ def dingtalk_sender(webhook_url: str,
             # This can be used to detect the master process.
             # See https://github.com/pytorch/pytorch/blob/master/torch/distributed/launch.py#L211
             # Except for errors, only the master process will send notifications.
-            if 'RANK' in os.environ:
-                master_process = (int(os.environ['RANK']) == 0)
-                host_name += ' - RANK: %s' % os.environ['RANK']
+            if "RANK" in os.environ:
+                master_process = int(os.environ["RANK"]) == 0
+                host_name += " - RANK: %s" % os.environ["RANK"]
             else:
                 master_process = True
 
             if master_process:
-                contents = ['Your training has started 🎬',
-                            'Machine name: %s' % host_name,
-                            'Main call: %s' % func_name,
-                            'Starting date: %s' % start_time.strftime(DATE_FORMAT)]
-                contents.extend(['@{}'.format(i) for i in user_mentions])
+                contents = [
+                    "Your training has started 🎬",
+                    "Machine name: %s" % host_name,
+                    "Main call: %s" % func_name,
+                    "Starting date: %s" % start_time.strftime(DATE_FORMAT),
+                ]
+                contents.extend(["@{}".format(i) for i in user_mentions])
                 contents.extend(keywords)
-                
-                msg_template['text']['content'] = '\n'.join(contents)
+
+                msg_template["text"]["content"] = "\n".join(contents)
                 if secret:
                     postto = _construct_encrypted_url()
                     requests.post(postto, json=msg_template)
@@ -105,23 +107,28 @@ def dingtalk_sender(webhook_url: str,
                 if master_process:
                     end_time = datetime.datetime.now()
                     elapsed_time = end_time - start_time
-                    contents = ["Your training is complete 🎉",
-                                'Machine name: %s' % host_name,
-                                'Main call: %s' % func_name,
-                                'Starting date: %s' % start_time.strftime(DATE_FORMAT),
-                                'End date: %s' % end_time.strftime(DATE_FORMAT),
-                                'Training duration: %s' % str(elapsed_time)]
+                    contents = [
+                        "Your training is complete 🎉",
+                        "Machine name: %s" % host_name,
+                        "Main call: %s" % func_name,
+                        "Starting date: %s" % start_time.strftime(DATE_FORMAT),
+                        "End date: %s" % end_time.strftime(DATE_FORMAT),
+                        "Training duration: %s" % str(elapsed_time),
+                    ]
 
                     try:
                         str_value = str(value)
-                        contents.append('Main call returned value: %s'% str_value)
-                    except:
-                        contents.append('Main call returned value: %s'% "ERROR - Couldn't str the returned value.")
+                        contents.append("Main call returned value: %s" % str_value)
+                    except Exception:
+                        contents.append(
+                            "Main call returned value: %s"
+                            % "ERROR - Couldn't str the returned value."
+                        )
 
-                    contents.extend(['@{}'.format(i) for i in user_mentions])
+                    contents.extend(["@{}".format(i) for i in user_mentions])
                     contents.extend(keywords)
 
-                    msg_template['text']['content'] = '\n'.join(contents)
+                    msg_template["text"]["content"] = "\n".join(contents)
                     if secret:
                         postto = _construct_encrypted_url()
                         requests.post(postto, json=msg_template)
@@ -134,20 +141,22 @@ def dingtalk_sender(webhook_url: str,
             except Exception as ex:
                 end_time = datetime.datetime.now()
                 elapsed_time = end_time - start_time
-                contents = ["Your training has crashed ☠️",
-                            'Machine name: %s' % host_name,
-                            'Main call: %s' % func_name,
-                            'Starting date: %s' % start_time.strftime(DATE_FORMAT),
-                            'Crash date: %s' % end_time.strftime(DATE_FORMAT),
-                            'Crashed training duration: %s\n\n' % str(elapsed_time),
-                            "Here's the error:",
-                            '%s\n\n' % ex,
-                            "Traceback:",
-                            '%s' % traceback.format_exc()]
-                contents.extend(['@{}'.format(i) for i in user_mentions])
+                contents = [
+                    "Your training has crashed ☠️",
+                    "Machine name: %s" % host_name,
+                    "Main call: %s" % func_name,
+                    "Starting date: %s" % start_time.strftime(DATE_FORMAT),
+                    "Crash date: %s" % end_time.strftime(DATE_FORMAT),
+                    "Crashed training duration: %s\n\n" % str(elapsed_time),
+                    "Here's the error:",
+                    "%s\n\n" % ex,
+                    "Traceback:",
+                    "%s" % traceback.format_exc(),
+                ]
+                contents.extend(["@{}".format(i) for i in user_mentions])
                 contents.extend(keywords)
-                
-                msg_template['text']['content'] = '\n'.join(contents)
+
+                msg_template["text"]["content"] = "\n".join(contents)
                 if secret:
                     postto = _construct_encrypted_url()
                     requests.post(postto, json=msg_template)

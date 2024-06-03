@@ -47,6 +47,7 @@ The service relies on [Yagmail](https://github.com/kootenpv/yagmail) a GMAIL/SMT
 ```python
 from knockknock import email_sender
 
+
 @email_sender(recipient_emails=["<your_email@address.com>", "<your_second_email@address.com>"], sender_email="<grandma's_email@gmail.com>")
 def train_your_nicest_model(your_nicest_parameters):
     import time
@@ -221,6 +222,7 @@ For Linux it uses the nofity-send command which uses libnotify, In order to use 
 ```python
 from knockknock import desktop_sender
 
+
 @desktop_sender(title="Knockknock Desktop Notifier")
 def train_your_nicest_model(your_nicest_parameters):
     import time
@@ -280,6 +282,7 @@ Thanks to [@prabhakar267](https://github.com/prabhakar267), you can also use Ama
 
 ```python
 from knockknock import chime_sender
+
 
 @chime_sender(webhook_url="<webhook_url_to_your_chime_room>")
 def train_your_nicest_model(your_nicest_parameters):
@@ -341,6 +344,7 @@ You can use [RocketChat](https://rocket.chat/) to get notifications. You'll need
 
 ```python
 from knockknock import rocketchat_sender
+
 
 @rocketchat_sender(
     rocketchat_server_url="<url_to_your_rocketchat_server>",
