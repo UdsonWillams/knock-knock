@@ -1,9 +1,29 @@
+import platform
 from io import open
 
 from setuptools import (
     find_packages,
     setup,
 )
+
+windows_request_libs = [
+    "yagmail==0.15.293",
+    "requests==2.32.3",
+    "twilio==9.1.0",
+    "python-telegram-bot==21.2",
+    "keyring==25.2.1",
+    "win11toast==0.34",
+]
+requested_libs = [
+    "yagmail==0.15.293",
+    "requests==2.32.3",
+    "twilio==9.1.0",
+    "python-telegram-bot==21.2",
+    "keyring==25.2.1",
+]
+
+if platform.system() == "Windows":
+    requested_libs = windows_request_libs
 
 setup(
     name="knock-knock",
@@ -19,13 +39,7 @@ setup(
     entry_points={"console_scripts": ["knockknock = knockknock.__main__:main"]},
     zip_safe=False,
     python_requires=">=3.10",
-    install_requires=[
-        "yagmail==0.15.293",
-        "requests==2.32.3",
-        "twilio==9.1.0",
-        "python-telegram-bot==21.2",
-        "keyring==25.2.1",
-    ],
+    install_requires=requested_libs,
     classifiers=[
         "Intended Audience :: Science/Research",
         "Development Status :: 3 - Alpha",

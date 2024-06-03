@@ -33,7 +33,7 @@ def desktop_sender(title: str = "knockknock"):
                 print(err)
                 print(
                     "Error: to use Windows Desktop Notifications, you need to install "
-                    + "`win10toast` first. Please run `pip install win10toast==0.9`."
+                    + "`win11toast` first. Please run `pip install win11toast==0.34`."
                 )
 
             toaster = ToastNotifier()
