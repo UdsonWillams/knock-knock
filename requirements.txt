@@ -1,0 +1,5 @@
+yagmail==0.15.293
+requests==2.32.3
+twilio==9.1.0
+python-telegram-bot==21.2
+keyring==25.2.1

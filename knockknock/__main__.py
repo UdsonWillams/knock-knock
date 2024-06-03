@@ -2,13 +2,9 @@ import argparse
 import subprocess
 
 from knockknock import (
-    chime_sender,
     desktop_sender,
-    dingtalk_sender,
     discord_sender,
     email_sender,
-    matrix_sender,
-    rocketchat_sender,
     slack_sender,
     sms_sender,
     teams_sender,
@@ -28,27 +24,6 @@ def main():
         help="Show full command in notification.",
     )
     subparsers = parser.add_subparsers()
-
-    # Chime
-    chime_parser = subparsers.add_parser(
-        name="chime",
-        description="Send a Chime message before and after function "
-        + "execution, with start and end status (successfully or crashed).",
-    )
-    chime_parser.add_argument(
-        "--webhook-url",
-        type=str,
-        required=True,
-        help="The webhook URL to access your chime room.",
-    )
-    chime_parser.add_argument(
-        "--user-mentions",
-        type=lambda s: s.split(","),
-        required=False,
-        default=[],
-        help="Optional user alias or full email address to notify, as comma separated list.",
-    )
-    chime_parser.set_defaults(sender_func=chime_sender)
 
     # Desktop
     desktop_parser = subparsers.add_parser(
@@ -123,41 +98,6 @@ def main():
     )
     slack_parser.set_defaults(sender_func=slack_sender)
 
-    # DingTalk
-    dingtalk_parser = subparsers.add_parser(
-        name="dingtalk",
-        description="Send a dingtalk message before and after function "
-        + "execution, with start and end status (sucessfully or crashed).",
-    )
-    dingtalk_parser.add_argument(
-        "--webhook-url",
-        type=str,
-        required=True,
-        help="The webhook URL to access your dingtalk chatroom",
-    )
-    dingtalk_parser.add_argument(
-        "--user-mentions",
-        type=lambda s: s.split(","),
-        required=False,
-        default=[],
-        help="Optional user's phone number to notify, as comma seperated list.",
-    )
-    dingtalk_parser.add_argument(
-        "--secret",
-        type=str,
-        required=False,
-        default="",
-        help="Optional the dingtalk chatroom robot's secret",
-    )
-    dingtalk_parser.add_argument(
-        "--keywords",
-        type=lambda s: s.split(","),
-        required=False,
-        default=[],
-        help="Optional accepted keywords set in dingtalk chatroom robot",
-    )
-    dingtalk_parser.set_defaults(sender_func=dingtalk_sender)
-
     # Telegram
     telegram_parser = subparsers.add_parser(
         name="telegram",
@@ -229,76 +169,6 @@ def main():
     )
     sms_parser.set_defaults(sender_func=sms_sender)
 
-    # Matrix
-    matrix_parser = subparsers.add_parser(
-        name="matrix",
-        description="Send a Matrix message before and after "
-        + "function execution, with start and end status (sucessfully or crashed).",
-    )
-    matrix_parser.add_argument(
-        "--homeserver",
-        type=str,
-        required=True,
-        help="The homeserver address which was used to register the BOT.",
-    )
-    matrix_parser.add_argument(
-        "--token",
-        type=str,
-        required=True,
-        help="The access TOKEN of the user that will send the messages.",
-    )
-    matrix_parser.add_argument(
-        "--room",
-        type=str,
-        required=True,
-        help="The alias of the room to which messages will be send by the BOT.",
-    )
-    matrix_parser.set_defaults(sender_func=matrix_sender)
-
-    # RocketChat
-    rocketchat_parser = subparsers.add_parser(
-        name="rocketchat",
-        description="Send a RocketChat message before and after function "
-        + "execution, with start and end status (sucessfully or crashed).",
-    )
-    rocketchat_parser.add_argument(
-        "--rocketchat-server-url",
-        type=str,
-        required=True,
-        help="The RocketChat server URL.",
-    )
-    rocketchat_parser.add_argument(
-        "--rocketchat-user-id",
-        type=str,
-        required=True,
-        help="The RocketChat user id to post messages with (you'll be able to view your user id when you create a personal access token).",
-    )
-    rocketchat_parser.add_argument(
-        "--rocketchat-auth-token",
-        type=str,
-        required=True,
-        help="The RocketChat personal access token."
-        + "Visit https://rocket.chat/docs/developer-guides/rest-api/personal-access-tokens/ for more details.",
-    )
-    rocketchat_parser.add_argument(
-        "--channel", type=str, required=True, help="The RocketChat channel to log."
-    )
-    rocketchat_parser.add_argument(
-        "--user-mentions",
-        type=lambda s: s.split(","),
-        required=False,
-        default=[],
-        help="Optional user names to notify, as comma seperated list.",
-    )
-    rocketchat_parser.add_argument(
-        "--alias",
-        type=str,
-        required=False,
-        default="",
-        help="Optional alias to use for the notification.",
-    )
-    rocketchat_parser.set_defaults(sender_func=rocketchat_sender)
-
     # WeChat Work
     wechat_parser = subparsers.add_parser(
         name="wechat",
@@ -316,14 +186,14 @@ def main():
         type=lambda s: s.split(","),
         required=False,
         default=[],
-        help="Optional userids to notify (use '@all' for all group members), as comma seperated list.",
+        help="Optional userids to notify (use '@all' for all group members), as comma seperated list.",  # noqa
     )
     wechat_parser.add_argument(
         "--user-mentions-mobile",
         type=lambda s: s.split(","),
         required=False,
         default=[],
-        help="Optional user phone numbers to notify (use '@all' for all group members), as comma seperated list.",
+        help="Optional user phone numbers to notify (use '@all' for all group members), as comma seperated list.",  # noqa
     )
     wechat_parser.set_defaults(sender_func=wechat_sender)
 
