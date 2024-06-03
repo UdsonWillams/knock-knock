@@ -6,14 +6,6 @@ from setuptools import (
     setup,
 )
 
-windows_request_libs = [
-    "yagmail==0.15.293",
-    "requests==2.32.3",
-    "twilio==9.1.0",
-    "python-telegram-bot==21.2",
-    "keyring==25.2.1",
-    "win11toast==0.34",
-]
 requested_libs = [
     "yagmail==0.15.293",
     "requests==2.32.3",
@@ -23,7 +15,7 @@ requested_libs = [
 ]
 
 if platform.system() == "Windows":
-    requested_libs = windows_request_libs
+    requested_libs.append("win11toast==0.34")
 
 setup(
     name="knock-knock",
