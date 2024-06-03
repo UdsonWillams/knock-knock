@@ -1,10 +1,10 @@
-# Knock Knock
+# Uds Knock-Knock
 
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-red.svg)](#python) [![Downloads](https://pepy.tech/badge/knockknock)](https://pepy.tech/project/knockknock) [![Downloads](https://pepy.tech/badge/knockknock/month)](https://pepy.tech/project/knockknock/month) [![GitHub stars](https://img.shields.io/github/stars/huggingface/knockknock.svg?style=social&label=Star&maxAge=1000)](https://github.com/huggingface/knockknock/stargazers/)
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-red.svg)](#python)
 
-A small library to get a notification when your training is complete or when it crashes during the process with two additional lines of code.
+A small library to get a notification when you want with two additional lines of code.
 
-When training deep learning models, it is common to use early stopping. Apart from a rough estimate, it is difficult to predict when the training will finish. Thus, it can be interesting to set up automatic notifications for your training. It is also interesting to be notified when your training crashes in the middle of the process for unexpected reasons.
+The original concept of the library was notifications at the end of training deep learning models. My idea was to be able to use notifications for any function, without being something specific to deep learning.
 
 ## Installation
 
@@ -40,7 +40,7 @@ There are currently *twelve* ways to setup notifications:
 
 ### Email
 
-The service relies on [Yagmail](https://github.com/kootenpv/yagmail) a GMAIL/SMTP client. You'll need a gmail email address to use it (you can setup one [here](https://accounts.google.com), it's free). I recommend creating a new one (rather than your usual one) since you'll have to modify the account's security settings to allow the Python library to access it by [Turning on less secure apps](https://devanswers.co/allow-less-secure-apps-access-gmail-account/).
+The service relies on [Yagmail](https://github.com/kootenpv/yagmail) a GMAIL/SMTP client. You'll need a gmail email address to use it (you can setup one [here](https://accounts.google.com), it's free). I recommend creating a new one (rather than your usual one) since you'll have to modify the account's security settings and do this modifications [Create passwords apps](https://stackoverflow.com/questions/67360013/why-when-i-compile-i-get-username-and-password-are-not-accepted).
 
 #### Python
 
