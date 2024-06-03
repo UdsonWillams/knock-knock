@@ -10,7 +10,7 @@ DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 def telegram_sender(token: str, chat_id: int):
-    """
+    """# noqa
     Telegram sender wrapper: execute func, send a Telegram message with the end status
     (sucessfully finished or crashed) at the end. Also send a Telegram message before
     executing func.
@@ -36,9 +36,9 @@ def telegram_sender(token: str, chat_id: int):
             func_name = func.__name__
 
             # Handling distributed training edge case.
-            # In PyTorch, the launch of `torch.distributed.launch` sets up a RANK environment variable for each process.
+            # In PyTorch, the launch of `torch.distributed.launch` sets up a RANK environment variable for each process.   # noqa
             # This can be used to detect the master process.
-            # See https://github.com/pytorch/pytorch/blob/master/torch/distributed/launch.py#L211
+            # See https://github.com/pytorch/pytorch/blob/master/torch/distributed/launch.py#L211   # noqa
             # Except for errors, only the master process will send notifications.
             if "RANK" in os.environ:
                 master_process = int(os.environ["RANK"]) == 0

@@ -12,7 +12,7 @@ DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 def teams_sender(webhook_url: str, user_mentions: List[str] = []):
-    """
+    """# noqa
     team sender wrapper: execute func, send a team notification with the end status
     (sucessfully finished or crashed) at the end. Also send a Slack notification before
     executing func.
@@ -38,9 +38,9 @@ def teams_sender(webhook_url: str, user_mentions: List[str] = []):
             func_name = func.__name__
 
             # Handling distributed training edge case.
-            # In PyTorch, the launch of `torch.distributed.launch` sets up a RANK environment variable for each process.
+            # In PyTorch, the launch of `torch.distributed.launch` sets up a RANK environment variable for each process.   # noqa
             # This can be used to detect the master process.
-            # See https://github.com/pytorch/pytorch/blob/master/torch/distributed/launch.py#L211
+            # See https://github.com/pytorch/pytorch/blob/master/torch/distributed/launch.py#L211   # noqa
             # Except for errors, only the master process will send notifications.
             if "RANK" in os.environ:
                 master_process = int(os.environ["RANK"]) == 0

@@ -11,7 +11,7 @@ DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 def discord_sender(webhook_url: str):
-    """
+    """# noqa
     Discord sender wrapper: execute func, send a Discord message with the end status
     (sucessfully finished or crashed) at the end. Also send a Discord message before
     executing func.
@@ -26,7 +26,7 @@ def discord_sender(webhook_url: str):
         def send_message(text: str):
             headers = {"Content-Type": "application/json"}
             payload = json.dumps({"content": text})
-            r = requests.post(url=webhook_url, data=payload, headers=headers)
+            requests.post(url=webhook_url, data=payload, headers=headers)
 
         @functools.wraps(func)
         def wrapper_sender(*args, **kwargs):
@@ -36,9 +36,9 @@ def discord_sender(webhook_url: str):
             func_name = func.__name__
 
             # Handling distributed training edge case.
-            # In PyTorch, the launch of `torch.distributed.launch` sets up a RANK environment variable for each process.
+            # In PyTorch, the launch of `torch.distributed.launch` sets up a RANK environment variable for each process.   # noqa
             # This can be used to detect the master process.
-            # See https://github.com/pytorch/pytorch/blob/master/torch/distributed/launch.py#L211
+            # See https://github.com/pytorch/pytorch/blob/master/torch/distributed/launch.py#L211   # noqa
             # Except for errors, only the master process will send notifications.
             if "RANK" in os.environ:
                 master_process = int(os.environ["RANK"]) == 0
