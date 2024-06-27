@@ -7,10 +7,10 @@ model = FunctionModel(
 )
 
 @desktop_sender(title="Tomar remedio!", model=model)
-def train_your_nicest_model(teste=123):
+def take_medicine_at_5():
     import time
     time.sleep(5)
     return {"loss": 0.9}
 
 if __name__ == "__main__":
-    train_your_nicest_model()
+    take_medicine_at_5()

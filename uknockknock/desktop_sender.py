@@ -93,6 +93,7 @@ def desktop_sender(title: str = "knockknock", model = default_model):
                             " Main call returned value: ERROR - "
                             "Couldn't str the returned value."
                         )
+                    print(text, title)
                     show_notification(text, title)
 
                 return value
