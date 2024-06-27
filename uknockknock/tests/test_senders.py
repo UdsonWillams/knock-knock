@@ -5,7 +5,7 @@ To run the tests: `python -m unittest discover -v knockknock.tests`
 
 import unittest
 
-from knockknock.desktop_sender import desktop_sender
+from uknockknock.desktop_sender import desktop_sender
 
 
 class TestSenders(unittest.TestCase):

@@ -1,7 +1,7 @@
 import argparse
 import subprocess
 
-from knockknock import (
+from uknockknock import (
     desktop_sender,
     discord_sender,
     email_sender,
